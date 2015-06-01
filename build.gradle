@@ -11,6 +11,12 @@ buildscript {
 apply plugin: 'ear'
 apply plugin: 'com.bmuschko.cargo'
 
+repositories {
+    jcenter()
+}
+
+cargoStartLocal.dependsOn ear
+
 /*
  * Configure Cargo
  */
