@@ -1,0 +1,40 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.1.1'
+    }
+}
+
+apply plugin: 'ear'
+apply plugin: 'com.bmuschko.cargo'
+
+/*
+ * Configure Cargo
+ */
+cargo {
+    containerId = 'wildfly8x'
+    port = 8080
+
+    local {
+        timeout = 120000
+        installer {
+            installUrl = 'http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.tar.gz'
+            downloadDir = file("$buildDir/cargo/download/")
+            extractDir = file("$buildDir/cargo/")
+        }
+
+        file {
+            file = file('src/main/wildfly/configuration/binary/')
+            toDir = file("configuration/")
+        }
+
+        // Configure property files
+        configFile {
+            file = file('src/main/wildfly/configuration/text/')
+            toDir = file("configuration/")
+        }
+    }
+}
